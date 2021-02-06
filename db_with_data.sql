@@ -147,7 +147,7 @@ DROP TABLE IF EXISTS `user`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user` (
   `username` varchar(16) NOT NULL,
-  `password` varchar(32) NOT NULL,
+  `password` varchar(128) NOT NULL,
   `jmeno` varchar(45) NOT NULL,
   `prijmeni` varchar(45) NOT NULL,
   PRIMARY KEY (`username`),
@@ -161,7 +161,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES ('kamas','71b76056a3825dd5d499139a306adb78','kamas','tom'),('shewi','d1294a08835e2942ab47428185bbfc1a','dominika','peroxide');
+INSERT INTO `user` VALUES ('kamas','cb4bbdfc9b682c298cdfc02cf3b67c6175acc7715b67cdfa7a489975061574d23b3eb1d44ee8e973740d10962890b0c4ff22c3e40fca4dada644ac26bc90b755','kamas','tom'),('shewi','8a827e58f89b473fd09b9c09e6d3e60e66a8343fc4e7c84b92807792f04f1ec375768a8616a44a89af7c34291a8a72300cb010e070432c0322f0f7f976118ed0','dominika','peroxide');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -174,4 +174,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-11-22 20:59:29
+-- Dump completed on 2021-02-06 15:33:50
