@@ -10,7 +10,7 @@ from werkzeug.utils import redirect
 app = Flask(__name__)   # Flask instance
 app.secret_key = b'_5#loL"Fas4z\n\x92]/'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'mojaWIFI4'
+app.config['MYSQL_PASSWORD'] = 'mojaWIFI4*'
 app.config['MYSQL_DB'] = 'mydb'
 app.config['MYSQL_HOST'] = 'localhost'
 
@@ -125,7 +125,7 @@ def ukoly(ID):
 
 def check_hash(plain, hashed):
     """ Check MD5 hashes """
-    encoded = hashlib.md5(plain.encode()).hexdigest().lower()
+    encoded = hashlib.sha512(plain.encode()).hexdigest().lower()
   #  encodedd = hashlib.md5(hashed.encode()).hexdigest().lower()
 
     return encoded == hashed.lower()
