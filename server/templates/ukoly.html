@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="cz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ukoly</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <div>
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+         <ul class="navbar-nav mr-auto">
+             <li>
+                 <form action="/">
+                    <button type="submit" class="btn btn-outline-primary mr-sm-2">Hlavní stránka</button>
+                </form>
+             </li>
+        </ul>
+            <ul class="navbar-nav navbar-right">
+            
+	{% if session['user_id'] %}
+             <li>
+             <span class="navbar-text mr-sm-2">
+                    {{ session['user_id'] }}
+             </span>
+             </li>         
+             <li>
+                <form action="/logout">
+                    <button type="submit" class="btn btn-outline-primary mr-sm-2">Odhlásit</button>
+                </form>
+             </li>
+        {% else %}
+             <li>
+                <form action="/login">
+                    <button type="submit" class="btn btn-outline-primary mr-sm-2">Přihlásit</button>
+                </form>
+             </li>
+        {% endif %}
+        </ul>
+    </nav>
+    </div>
+    <!-- -->
+
+    	<div class="container">
+	    <h1>ukoly pacienta {{ pacient['jmeno'] }} {{ pacient['prijmeni'] }} pre vysetrenie {{ dia_vysetrenie['nazev'] }} </h1>
+        <table class="table table-borderless table-striped">
+	    <thead class="thead-dark">
+		    <tr>
+                <th>jmeno</th>
+			    <th>subor grafickeho tabletu</th>
+                <th> velkost suboru</th>      
+            	<th>datum vytvoreni</th>
+                <th>datum zmeny</th>
+                     	                
+            	</tr>
+    	</thead>
+	    <tbody>
+            {% if ukoly %}
+            {% for ukoly in ukoly %}
+            <TR>
+                <TD><a href="/edit_ukol/{{ ukoly['ID'] }}">{{ ukoly['jmeno'] }}</a></TD>
+                <TD><SPAN>{{ ukoly['subor_grafickeho_tabletu'] }}</SPAN></TD>
+                <TD><SPAN>{{ ukoly['velkost_suboru']}}</SPAN></TD>
+                <TD><SPAN>{{ ukoly['datum_vytvoreni']}}</SPAN></TD>
+                <TD><SPAN>{{ ukoly['datum_zmeny']}}</SPAN></TD>
+
+            </TR>
+            {% endfor %}
+            {% else %}
+            <TR>
+                <TD><a>empty</a></TD>
+                <TD>empty<TD>
+                <TD><SPAN>empty</SPAN></TD>
+                <TD><SPAN>empty</SPAN></TD>
+                <TD><a>empty</a></TD>
+            </TR>
+
+            {% endif %}
+            </tbody>
+            </table>
+    </div>
+</body>
+</html>

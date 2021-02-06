@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="cz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>diagnozy</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <div>
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+         <ul class="navbar-nav mr-auto">
+             <li>
+                 <form action="/">
+                    <button type="submit" class="btn btn-outline-primary mr-sm-2">Hlavní stránka</button>
+                </form>
+             </li>
+        </ul>
+            <ul class="navbar-nav navbar-right">
+            
+	{% if session['user_id'] %}
+             <li>
+             <span class="navbar-text mr-sm-2">
+                    {{ session['user_id'] }}
+             </span>
+             </li>         
+             <li>
+                <form action="/logout">
+                    <button type="submit" class="btn btn-outline-primary mr-sm-2">Odhlásit</button>
+                </form>
+             </li>
+        {% else %}
+             <li>
+                <form action="/login">
+                    <button type="submit" class="btn btn-outline-primary mr-sm-2">Přihlásit</button>
+                </form>
+             </li>
+        {% endif %}
+        </ul>
+    </nav>
+    </div>
+    <!-- -->
+
+    	<div class="container">
+	    <h1>diagnozy pacienta {{ pacient['jmeno'] }} {{ pacient['prijmeni'] }} </h1>
+        <a>{{ pacient['jmeno'] }} {{ pacient['prijmeni'] }}</a>
+        <table class="table table-borderless table-striped">
+	    <thead class="thead-dark">
+		    <tr>
+			    <th>diagnozy</th>
+            	<th>stav</th>
+            	<th>datum vytvoreni</th>
+            	<th>datum zmeny</th>
+			    <th>diagnosticke vysetrenia</th>
+			    </tr>
+    	</thead>
+	    <tbody>
+            {% for diagnoza_table in diagnoza_table %}
+            <TR>
+                <TD><a href="/edit_diagnoza/{{ diagnoza_table['ID'] }}">{{ diagnoza_table['diagnoza'] }}</a></TD>
+                <TD>{{ diagnoza_table['stav'] }}</TD>
+                <TD><SPAN>{{ diagnoza_table['datum_vytvoreni'] }}</SPAN></TD>
+                <TD><SPAN>{{ diagnoza_table['datum_zmeny']}}</SPAN></TD>
+                <TD><a href="/diagnosticke_vysetrenia/{{ diagnoza_table['ID'] }}">diagnostice_vysetrenia</a></TD>
+           </TR>
+          {% endfor %}
+       	  </tbody>
+          </table>
+    </div>
+</body>
+</html>

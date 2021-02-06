@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="cz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hlavní stránka</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <div>
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+         <ul class="navbar-nav mr-auto">
+             <li>
+                 <form action="/">
+                    <button type="submit" class="btn btn-outline-primary mr-sm-2">Hlavní stránka</button>
+                </form>
+             </li>
+        </ul>
+            <ul class="navbar-nav navbar-right">
+            
+	{% if session['user_id'] %}
+             <li>
+             <span class="navbar-text mr-sm-2">
+                    {{ session['user_id'] }}
+             </span>
+             </li>         
+             <li>
+                <form action="/logout">
+                    <button type="submit" class="btn btn-outline-primary mr-sm-2">Odhlásit</button>
+                </form>
+             </li>
+        {% else %}
+             <li>
+                <form action="/login">
+                    <button type="submit" class="btn btn-outline-primary mr-sm-2">Přihlásit</button>
+                </form>
+             </li>
+        {% endif %}
+        </ul>
+    </nav>
+    </div>
+    <!-- -->
+    {% if pacient %}
+    {% else %}
+        <a> ziadni  pacienti tu niesu </a>
+    {% endif %}
+	<div class="container">
+	<h1>pacienti</h1>
+        <table class="table table-borderless table-striped">
+	<thead class="thead-dark">
+		<tr>
+			<th>ID</th>
+        		<th>jmeno</th>
+        		<th>prijmeni</th>
+        		<th>pohlavi</th>
+			<th>datum narozeni</th>
+			<th>diagnozy</th>
+        		</tr>
+	</thead>
+	<tbody>
+        {% for pacient in pacient %}
+        <TR>
+           <TD><a href="/edit_pacient/{{ pacient['ID'] }}">{{ pacient['ID'] }}</a></TD>
+           <TD>{{ pacient['jmeno'] }}</TD>
+           <TD><SPAN>{{ pacient['prijmeni'] }}</SPAN></TD>
+           <TD><SPAN>{{ pacient['pohlavi']}}</SPAN></TD>
+           <TD><SPAN>{{ pacient['datum_narozeni']}}</SPAN></TD>
+           <TD><a href="/diagnozy/{{ pacient['ID'] }}">diagnozy</a></TD>
+        </TR>
+        {% endfor %}
+	</tbody>
+        </table>
+    </div>
+</body>
+</html>
