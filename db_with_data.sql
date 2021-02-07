@@ -33,7 +33,7 @@ CREATE TABLE `Diagnosticke_vysetrenie` (
   PRIMARY KEY (`ID`,`diagnoza_table_ID`,`diagnoza_table_pacient_ID`),
   KEY `fk_Diagnosticke_vysetrenie_diagnoza_table1_idx` (`diagnoza_table_ID`,`diagnoza_table_pacient_ID`),
   CONSTRAINT `fk_Diagnosticke_vysetrenie_diagnoza_table1` FOREIGN KEY (`diagnoza_table_ID`, `diagnoza_table_pacient_ID`) REFERENCES `diagnoza_table` (`ID`, `pacient_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -64,7 +64,7 @@ CREATE TABLE `diagnoza_table` (
   PRIMARY KEY (`ID`,`pacient_ID`),
   KEY `fk_diagnoza_table_pacient_idx` (`pacient_ID`),
   CONSTRAINT `fk_diagnoza_table_pacient` FOREIGN KEY (`pacient_ID`) REFERENCES `pacient` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -92,7 +92,7 @@ CREATE TABLE `pacient` (
   `datum_narozeni` date NOT NULL,
   `diagnozy` varchar(45) DEFAULT 'diagnozy',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -125,7 +125,7 @@ CREATE TABLE `ukol` (
   PRIMARY KEY (`ID`,`Diagnosticke_vysetrenie_ID`,`Diagnosticke_vysetrenie_diagnoza_table_ID`,`Diagnosticke_vysetrenie_diagnoza_table_pacient_ID`),
   KEY `fk_ukol_Diagnosticke_vysetrenie1_idx` (`Diagnosticke_vysetrenie_ID`,`Diagnosticke_vysetrenie_diagnoza_table_ID`,`Diagnosticke_vysetrenie_diagnoza_table_pacient_ID`),
   CONSTRAINT `fk_ukol_Diagnosticke_vysetrenie1` FOREIGN KEY (`Diagnosticke_vysetrenie_ID`, `Diagnosticke_vysetrenie_diagnoza_table_ID`, `Diagnosticke_vysetrenie_diagnoza_table_pacient_ID`) REFERENCES `Diagnosticke_vysetrenie` (`ID`, `diagnoza_table_ID`, `diagnoza_table_pacient_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -150,9 +150,10 @@ CREATE TABLE `user` (
   `password` varchar(128) NOT NULL,
   `jmeno` varchar(45) NOT NULL,
   `prijmeni` varchar(45) NOT NULL,
+  `TOTP_secret` varchar(20) NOT NULL,
   PRIMARY KEY (`username`),
   UNIQUE KEY `username_UNIQUE` (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -161,7 +162,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES ('kamas','cb4bbdfc9b682c298cdfc02cf3b67c6175acc7715b67cdfa7a489975061574d23b3eb1d44ee8e973740d10962890b0c4ff22c3e40fca4dada644ac26bc90b755','kamas','tom'),('shewi','8a827e58f89b473fd09b9c09e6d3e60e66a8343fc4e7c84b92807792f04f1ec375768a8616a44a89af7c34291a8a72300cb010e070432c0322f0f7f976118ed0','dominika','peroxide');
+INSERT INTO `user` VALUES ('kamas','cb4bbdfc9b682c298cdfc02cf3b67c6175acc7715b67cdfa7a489975061574d23b3eb1d44ee8e973740d10962890b0c4ff22c3e40fca4dada644ac26bc90b755','kamas','tom','nula'),('shewi','8a827e58f89b473fd09b9c09e6d3e60e66a8343fc4e7c84b92807792f04f1ec375768a8616a44a89af7c34291a8a72300cb010e070432c0322f0f7f976118ed0','dominika','peroxide','nula');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
