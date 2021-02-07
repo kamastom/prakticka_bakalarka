@@ -10,7 +10,7 @@ from werkzeug.utils import redirect
 app = Flask(__name__)   # Flask instance
 app.secret_key = b'_5#loL"Fas4z\n\x92]/'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'mojaWIFI4*'
+app.config['MYSQL_PASSWORD'] = 'mojaWIFI4'
 app.config['MYSQL_DB'] = 'mydb'
 app.config['MYSQL_HOST'] = 'localhost'
 
@@ -133,5 +133,5 @@ def check_hash(plain, hashed):
 
 
 if __name__ == '__main__':
-   app.run(ssl_context=('cert.pem','key.pem'),host='0.0.0.0')
+   app.run(ssl_context=('cert.pem','key.pem'),host='0.0.0.0', port=443 )
    ##app.run()
