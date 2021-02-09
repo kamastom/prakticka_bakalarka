@@ -127,6 +127,13 @@ def add_security_headers(resp):
     resp.headers['Content-Security-Policy']='default-src \'self\''
     return resp
 
+@app.before_request
+def before_request():
+        if request.url.startswith('http://'):
+            url = request.url.replace('http://', 'https://', 1)
+            code = 301
+            return redirect(url, code=code)
+
 def check_hash(plain, hashed):
     """ Check MD5 hashes """
     encoded = hashlib.sha512(plain.encode()).hexdigest().lower()
