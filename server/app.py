@@ -35,7 +35,7 @@ def index():
 
         return render_template('index.html', pacient=pacient)
     else:
-        return redirect(url_for('login'))
+       return redirect(url_for('login'))
 
     
 @app.route('/login', methods=['GET', 'POST'])
@@ -122,6 +122,10 @@ def ukoly(ID):
          return redirect(url_for('login'))
 
 
+@app.after_request
+def add_security_headers(resp):
+    resp.headers['Content-Security-Policy']='default-src \'self\''
+    return resp
 
 def check_hash(plain, hashed):
     """ Check MD5 hashes """
