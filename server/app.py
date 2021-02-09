@@ -1,6 +1,8 @@
 from MySQLdb import cursors
 from flask import Flask, render_template, request, session, url_for
 from flask_mysqldb import MySQL
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 import hashlib
 import unidecode
 
@@ -21,9 +23,14 @@ mysql = MySQL(app)  # MySQL instance
 with app.app_context():
     conn = mysql.connect
     cursor = conn.cursor(cursors.DictCursor)    # cursor that returns values as dict
-
+    limiter = Limiter(
+                app,
+                key_func=get_remote_address,
+                default_limits=["1/second"]
+            )
 
 @app.route('/')
+
 def index():
 
     if session:
@@ -39,6 +46,7 @@ def index():
 
     
 @app.route('/login', methods=['GET', 'POST'])
+#@limiter.limit("3/second")
 def login():
     """ Handle logging in """
     if request.method == 'POST':
