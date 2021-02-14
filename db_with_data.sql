@@ -33,7 +33,7 @@ CREATE TABLE `Diagnosticke_vysetrenie` (
   PRIMARY KEY (`ID`,`diagnoza_table_ID`,`diagnoza_table_pacient_ID`),
   KEY `fk_Diagnosticke_vysetrenie_diagnoza_table1_idx` (`diagnoza_table_ID`,`diagnoza_table_pacient_ID`),
   CONSTRAINT `fk_Diagnosticke_vysetrenie_diagnoza_table1` FOREIGN KEY (`diagnoza_table_ID`, `diagnoza_table_pacient_ID`) REFERENCES `diagnoza_table` (`ID`, `pacient_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -64,7 +64,7 @@ CREATE TABLE `diagnoza_table` (
   PRIMARY KEY (`ID`,`pacient_ID`),
   KEY `fk_diagnoza_table_pacient_idx` (`pacient_ID`),
   CONSTRAINT `fk_diagnoza_table_pacient` FOREIGN KEY (`pacient_ID`) REFERENCES `pacient` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -92,7 +92,7 @@ CREATE TABLE `pacient` (
   `datum_narozeni` date NOT NULL,
   `diagnozy` varchar(45) DEFAULT 'diagnozy',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -125,7 +125,7 @@ CREATE TABLE `ukol` (
   PRIMARY KEY (`ID`,`Diagnosticke_vysetrenie_ID`,`Diagnosticke_vysetrenie_diagnoza_table_ID`,`Diagnosticke_vysetrenie_diagnoza_table_pacient_ID`),
   KEY `fk_ukol_Diagnosticke_vysetrenie1_idx` (`Diagnosticke_vysetrenie_ID`,`Diagnosticke_vysetrenie_diagnoza_table_ID`,`Diagnosticke_vysetrenie_diagnoza_table_pacient_ID`),
   CONSTRAINT `fk_ukol_Diagnosticke_vysetrenie1` FOREIGN KEY (`Diagnosticke_vysetrenie_ID`, `Diagnosticke_vysetrenie_diagnoza_table_ID`, `Diagnosticke_vysetrenie_diagnoza_table_pacient_ID`) REFERENCES `Diagnosticke_vysetrenie` (`ID`, `diagnoza_table_ID`, `diagnoza_table_pacient_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -153,7 +153,7 @@ CREATE TABLE `user` (
   `TOTP_secret` varchar(20) NOT NULL,
   PRIMARY KEY (`username`),
   UNIQUE KEY `username_UNIQUE` (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
