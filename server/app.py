@@ -5,6 +5,7 @@ from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 import hashlib
 import unidecode
+from waitress import serve
 
 from werkzeug.utils import redirect
 
@@ -152,5 +153,6 @@ def check_hash(plain, hashed):
 
 
 if __name__ == '__main__':
-   app.run(ssl_context=('cert.pem','key.pem'),host='0.0.0.0', port=443 )
+    app.run(ssl_context=('cert.pem','key.pem'),host='0.0.0.0', port=9090 )
    ##app.run()
+   # serve(app,host='0.0.0.0', port=5000 )
