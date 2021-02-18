@@ -49,7 +49,7 @@
 		    <tr>
                 <th>jmeno</th>
 			    <th>subor grafickeho tabletu</th>
-                <th> velkost suboru</th>      
+                <th> velkost suboru MB</th>      
             	<th>datum vytvoreni</th>
                 <th>datum zmeny</th>
                      	                
@@ -60,7 +60,8 @@
             {% for ukoly in ukoly %}
             <TR>
                 <TD><a href="/edit_ukol/{{ ukoly['ID'] }}">{{ ukoly['jmeno'] }}</a></TD>
-                <TD><SPAN>{{ ukoly['subor_grafickeho_tabletu'] }}</SPAN></TD>
+		<TD><a href="/upload/{{ ukoly['ID'] }}">{{ ukoly['subor_grafickeho_tabletu'] }}</a></TD>
+                
                 <TD><SPAN>{{ ukoly['velkost_suboru']}}</SPAN></TD>
                 <TD><SPAN>{{ ukoly['datum_vytvoreni']}}</SPAN></TD>
                 <TD><SPAN>{{ ukoly['datum_zmeny']}}</SPAN></TD>

@@ -1,12 +1,13 @@
 from MySQLdb import cursors
-from flask import Flask, render_template, request, session, url_for
+from flask import Flask, render_template, request, session, url_for , flash , send_from_directory , send_file
 from flask_mysqldb import MySQL
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 import hashlib
 import unidecode
-from waitress import serve
-
+import os
+import os.path
+from werkzeug.utils import secure_filename
 from werkzeug.utils import redirect
 
 # Application config
@@ -16,6 +17,8 @@ app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = 'mojaWIFI4'
 app.config['MYSQL_DB'] = 'mydb'
 app.config['MYSQL_HOST'] = 'localhost'
+app.config['UPLOAD_FOLDER'] = 'files'
+ALLOWED_EXTENSIONS = {'txt','png','jpg','jpeg'}
 
 
 mysql = MySQL(app)  # MySQL instance
@@ -24,11 +27,7 @@ mysql = MySQL(app)  # MySQL instance
 with app.app_context():
     conn = mysql.connect
     cursor = conn.cursor(cursors.DictCursor)    # cursor that returns values as dict
-    limiter = Limiter(
-                app,
-                key_func=get_remote_address,
-                default_limits=["1/second"]
-            )
+    limiter = Limiter( app,key_func=get_remote_address, default_limits=["3/second"]  )
 
 @app.route('/')
 
@@ -58,6 +57,7 @@ def login():
 
         # Check for empty strings
         if not r_login or not r_password:
+           
             return render_template('login.html', invalid=True)
 
         # Fetch entry from database
@@ -131,6 +131,48 @@ def ukoly(ID):
          return redirect(url_for('login'))
 
 
+@app.route('/upload/<ID>', methods = ['GET', 'POST'])
+def nahravanie(ID):
+    if session: 
+        if request.method == 'POST':
+            if 'file' not in request.files:
+                flash('No file part')
+                return redirect(request.url)
+            file = request.files['file']
+            if file.filename == '':
+                flash('No selected file')
+                return redirect(request.url)
+            if file and allowed_file(file.filename):
+                name = secure_filename(file.filename)
+                filename = ID + "_" + str(name)
+                #filename = ID
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))
+#                return redirect(url_for('uploaded_file',filename=filename))
+             
+                file_length = os.stat(os.path.join(app.config['UPLOAD_FOLDER'],filename)).st_size
+                cursor.execute("SELECT CAST( Diagnosticke_vysetrenie_ID AS CHAR (15)) from ukol WHERE ID=\'" + ID + "\' ")
+                ukol = cursor.fetchone()
+                cursor.execute("UPDATE ukol SET subor_grafickeho_tabletu=\'" + str(name) + "\' , datum_zmeny=curdate() ,"
+                        " velkost_suboru=\'" + str((file_length/1048576))  + "\'   WHERE ID=\'" + ID + "\' ")
+                conn.commit()
+                #, velkost_suboru=\'" + file_length  + "\'
+                return redirect('/ukoly/' + ukol['CAST( Diagnosticke_vysetrenie_ID AS CHAR (15))'] + '')
+
+
+        else:
+            cursor.execute("SELECT subor_grafickeho_tabletu FROM ukol WHERE ID=\'" + ID + "\'")
+            name = cursor.fetchone()
+            subor = ID + "_" + name['subor_grafickeho_tabletu']
+             
+            if os.path.isfile(os.path.join(app.config['UPLOAD_FOLDER'],str(subor))):
+                return send_from_directory(app.config['UPLOAD_FOLDER'],str(subor),as_attachment=True) 
+               #return send_file(os.path.join(app.config['UPLOAD_FOLDER'],str(subor)), as_attachment=True)
+            else: 
+                return render_template('upload.html')
+    else:
+       return redirect(url_for('login'))
+        
+
 @app.after_request
 def add_security_headers(resp):
     resp.headers['Content-Security-Policy']='default-src \'self\''
@@ -143,9 +185,16 @@ def before_request():
             code = 301
             return redirect(url, code=code)
 
+
+def allowed_file(filename):
+    return '.' in filename and \
+            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
 def check_hash(plain, hashed):
     """ Check MD5 hashes """
     encoded = hashlib.sha512(plain.encode()).hexdigest().lower()
+  
   #  encodedd = hashlib.md5(hashed.encode()).hexdigest().lower()
 
     return encoded == hashed.lower()

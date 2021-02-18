@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="cz">
+<head>
+    <meta charset="UTF-8">
+    <title>Přihlášení</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <div>
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+         <ul class="navbar-nav mr-auto">
+             <li>
+                 <form action="/">
+                    <button type="submit" class="btn btn-outline-primary mr-sm-2">Hlavní stránka</button>
+                </form>
+             </li>
+        {% if session['user_id'] %}
+             <li>
+                <form action="/logout">
+                    <button type="submit" class="btn btn-outline-primary mr-sm-2">Odhlásit</button>
+                </form>
+             </li>
+        {% else %}
+             <li>
+                <form action="/login">
+                    <button type="submit" class="btn btn-outline-primary mr-sm-2">Přihlásit</button>
+                </form>
+             </li>
+        {% endif %}
+        </ul>
+    </nav>
+    </div>
+    <!-- -->
+    <div class="container">
+        <form method="post" enctype="multipart/form-data">
+	      <input type="file" name="file"/>
+	      <input type="submit" value="Upload"/>
+        </form>
+    </div>
+
+   </body>
+</html>
