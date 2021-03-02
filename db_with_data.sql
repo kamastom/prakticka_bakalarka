@@ -24,10 +24,10 @@ DROP TABLE IF EXISTS `Diagnosticke_vysetrenie`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Diagnosticke_vysetrenie` (
   `ID` int unsigned NOT NULL AUTO_INCREMENT,
-  `nazev` varchar(45) NOT NULL,
+  `nazev` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
   `datum_vysetreni` date NOT NULL,
-  `pracovnik` varchar(45) NOT NULL,
-  `ukoly` varchar(45) DEFAULT 'ukoly',
+  `pracovnik` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ukoly` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT 'ukoly',
   `diagnoza_table_ID` int unsigned NOT NULL,
   `diagnoza_table_pacient_ID` int unsigned NOT NULL,
   PRIMARY KEY (`ID`,`diagnoza_table_ID`,`diagnoza_table_pacient_ID`),
@@ -55,11 +55,11 @@ DROP TABLE IF EXISTS `diagnoza_table`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `diagnoza_table` (
   `ID` int unsigned NOT NULL AUTO_INCREMENT,
-  `diagnoza` varchar(45) NOT NULL,
-  `stav` varchar(45) NOT NULL,
+  `diagnoza` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `stav` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
   `datum_vytvoreni` date NOT NULL,
   `datum_zmeny` date NOT NULL,
-  `Diagnosticke_vysetrenia` varchar(45) DEFAULT 'Diagnosticke_vysetrenia',
+  `Diagnosticke_vysetrenia` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT 'Diagnosticke_vysetrenia',
   `pacient_ID` int unsigned NOT NULL,
   PRIMARY KEY (`ID`,`pacient_ID`),
   KEY `fk_diagnoza_table_pacient_idx` (`pacient_ID`),
@@ -86,11 +86,11 @@ DROP TABLE IF EXISTS `pacient`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pacient` (
   `ID` int unsigned NOT NULL AUTO_INCREMENT,
-  `jmeno` varchar(45) NOT NULL,
-  `prijmeni` varchar(45) NOT NULL,
-  `pohlavi` varchar(45) NOT NULL,
+  `jmeno` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `prijmeni` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `pohlavi` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
   `datum_narozeni` date NOT NULL,
-  `diagnozy` varchar(45) DEFAULT 'diagnozy',
+  `diagnozy` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT 'diagnozy',
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -101,7 +101,7 @@ CREATE TABLE `pacient` (
 
 LOCK TABLES `pacient` WRITE;
 /*!40000 ALTER TABLE `pacient` DISABLE KEYS */;
-INSERT INTO `pacient` VALUES (1,'pacient1','prijmeni','neviem','2155-09-06','diagnozy'),(2,'pacient2','prijmen3','neviem','0666-09-06','diagnozy'),(3,'tatiana','nie','zena','0666-06-06','diagnozy'),(4,'dominika','vesela','zena','1996-04-14','diagnozy');
+INSERT INTO `pacient` VALUES (1,'barca','prijmeni','neviem','2155-09-06','diagnozy'),(2,'pacient2','prijmen3','neviem','0666-09-06','diagnozy'),(3,'tatiana','nie','zena','0666-06-06','diagnozy'),(4,'dominika','vesela','zena','1996-04-14','diagnozy');
 /*!40000 ALTER TABLE `pacient` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -114,8 +114,8 @@ DROP TABLE IF EXISTS `ukol`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ukol` (
   `ID` int unsigned NOT NULL AUTO_INCREMENT,
-  `jmeno` varchar(45) NOT NULL,
-  `subor_grafickeho_tabletu` varchar(45) DEFAULT NULL,
+  `jmeno` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `subor_grafickeho_tabletu` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `datum_vytvoreni` date NOT NULL,
   `datum_zmeny` date NOT NULL,
   `velkost_suboru` int unsigned DEFAULT NULL,
@@ -134,7 +134,7 @@ CREATE TABLE `ukol` (
 
 LOCK TABLES `ukol` WRITE;
 /*!40000 ALTER TABLE `ukol` DISABLE KEYS */;
-INSERT INTO `ukol` VALUES (1,'default1',NULL,'1645-08-07','2020-11-22',NULL,1,1,1),(2,'default2',NULL,'1645-08-07','2020-11-22',NULL,1,1,1),(3,'default3',NULL,'1645-08-07','2020-11-22',NULL,1,1,1),(4,'default4',NULL,'0145-08-07','2020-11-22',NULL,2,2,2),(5,'default4',NULL,'1455-08-07','2020-11-22',NULL,2,2,2),(6,'default5',NULL,'1455-08-07','2020-11-22',NULL,3,3,2),(7,'default6',NULL,'1455-08-07','2020-11-22',NULL,4,4,3),(8,'default6',NULL,'1455-08-07','2020-11-22',NULL,5,4,3),(9,'default7',NULL,'1455-08-07','2020-11-22',NULL,5,4,3),(10,'default8',NULL,'1455-08-07','2020-11-22',NULL,6,4,3),(11,'default9',NULL,'1455-08-07','2020-11-22',NULL,9,7,4);
+INSERT INTO `ukol` VALUES (1,'default1','4k_space_244_-_3840x2160.png','1645-08-07','2021-02-28',13,1,1,1),(2,'default2','1869588.jpg','1645-08-07','2021-02-28',0,1,1,1),(3,'default3','7Wmf3Lx.jpg','1645-08-07','2021-02-27',1,1,1,1),(4,'default4',NULL,'0145-08-07','2020-11-22',NULL,2,2,2),(5,'default4',NULL,'1455-08-07','2020-11-22',NULL,2,2,2),(6,'default5',NULL,'1455-08-07','2020-11-22',NULL,3,3,2),(7,'default6',NULL,'1455-08-07','2020-11-22',NULL,4,4,3),(8,'default6',NULL,'1455-08-07','2020-11-22',NULL,5,4,3),(9,'default7',NULL,'1455-08-07','2020-11-22',NULL,5,4,3),(10,'default8',NULL,'1455-08-07','2020-11-22',NULL,6,4,3),(11,'default9',NULL,'1455-08-07','2020-11-22',NULL,9,7,4);
 /*!40000 ALTER TABLE `ukol` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -146,11 +146,12 @@ DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user` (
-  `username` varchar(16) NOT NULL,
-  `password` varchar(128) NOT NULL,
-  `jmeno` varchar(45) NOT NULL,
-  `prijmeni` varchar(45) NOT NULL,
-  `TOTP_secret` varchar(20) NOT NULL,
+  `username` varchar(16) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `jmeno` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `prijmeni` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `counter` int NOT NULL,
+  `HOTP` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`username`),
   UNIQUE KEY `username_UNIQUE` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -162,7 +163,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES ('kamas','cb4bbdfc9b682c298cdfc02cf3b67c6175acc7715b67cdfa7a489975061574d23b3eb1d44ee8e973740d10962890b0c4ff22c3e40fca4dada644ac26bc90b755','kamas','tom','nula'),('shewi','8a827e58f89b473fd09b9c09e6d3e60e66a8343fc4e7c84b92807792f04f1ec375768a8616a44a89af7c34291a8a72300cb010e070432c0322f0f7f976118ed0','dominika','peroxide','nula');
+INSERT INTO `user` VALUES ('kamas','cb4bbdfc9b682c298cdfc02cf3b67c6175acc7715b67cdfa7a489975061574d23b3eb1d44ee8e973740d10962890b0c4ff22c3e40fca4dada644ac26bc90b755','kamas','tom',107,'BASE23SECRET2323'),('shewi','8a827e58f89b473fd09b9c09e6d3e60e66a8343fc4e7c84b92807792f04f1ec375768a8616a44a89af7c34291a8a72300cb010e070432c0322f0f7f976118ed0','dominika','peroxide',102,'BASE32SECRET3232');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -175,4 +176,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-02-06 15:33:50
+-- Dump completed on 2021-03-02 20:38:00

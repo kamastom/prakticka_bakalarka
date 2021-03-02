@@ -1,14 +1,24 @@
+#!/usr/bin/python3
 from MySQLdb import cursors
-from flask import Flask, render_template, request, session, url_for , flash , send_from_directory , send_file
+from flask import Flask, render_template, request, session, url_for , flash , send_from_directory , send_file 
 from flask_mysqldb import MySQL
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+from Crypto.Cipher import AES
+from simplecrypt import encrypt, decrypt
+from cryptography.fernet import Fernet
 import hashlib
 import unidecode
 import os
 import os.path
+import subprocess
+import shlex
 from werkzeug.utils import secure_filename
 from werkzeug.utils import redirect
+from threading import Thread
+import time 
+from datetime import timedelta
+import pyotp
 
 # Application config
 app = Flask(__name__)   # Flask instance
@@ -18,6 +28,7 @@ app.config['MYSQL_PASSWORD'] = 'mojaWIFI4'
 app.config['MYSQL_DB'] = 'mydb'
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['UPLOAD_FOLDER'] = 'files'
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=60)
 ALLOWED_EXTENSIONS = {'txt','png','jpg','jpeg'}
 
 
@@ -54,14 +65,15 @@ def login():
         # Get login and password from form
         r_login = request.form['login']
         r_password = request.form['password']
+        r_token = request.form['token']
 
         # Check for empty strings
-        if not r_login or not r_password:
+        if not r_login or not r_password or not r_token:
            
             return render_template('login.html', invalid=True)
 
         # Fetch entry from database
-        cursor.execute("SELECT username, password FROM user WHERE username ='" + r_login + "'")
+        cursor.execute("SELECT  * FROM user WHERE username ='" + r_login + "'")
         user = cursor.fetchone()
 
         # If user is not in the database
@@ -70,11 +82,14 @@ def login():
 
         # Check password hash
         match = check_hash(r_password, user['password'])
-
-        if match is True:
+        match2 = check_token(r_token, user['HOTP'], user['counter'])
+        if match is True and match2 != 0:
             # Start new session
             session.clear()
             session['user_id'] = user['username']
+            cursor.execute("UPDATE user SET counter='" + str(match2) +"'WHERE username='"+ r_login +"'")
+            conn.commit()
+            #session.permanent = True
             return redirect(url_for('index'))           
         else:
             return render_template('login.html', invalid=True)
@@ -127,7 +142,7 @@ def ukoly(ID):
         cursor.execute("SELECT * FROM Diagnosticke_vysetrenie WHERE ID = \'" + ID + "\' ")
         dia_vysetrenie = cursor.fetchone()
         return render_template('ukoly.html' , ukoly = ukoly , pacient = pacient , dia_vysetrenie = dia_vysetrenie)
-    else:
+    else :
          return redirect(url_for('login'))
 
 
@@ -145,28 +160,57 @@ def nahravanie(ID):
             if file and allowed_file(file.filename):
                 name = secure_filename(file.filename)
                 filename = ID + "_" + str(name)
-                #filename = ID
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))
-#                return redirect(url_for('uploaded_file',filename=filename))
-             
+                key = b'yOHPDHMuGmoX2yqPWIXQ8exHObui08CbM1R1AskJt1A='
+                fernet = Fernet(key)
+
+                with open(os.path.join(app.config['UPLOAD_FOLDER'],filename),'rb') as file:
+                    mojfile = file.read()
+                enfile = fernet.encrypt(mojfile)
+                
+                with open(os.path.join(app.config['UPLOAD_FOLDER'],filename),'wb') as encrypted_file:
+                    encrypted_file.write(enfile)
+
                 file_length = os.stat(os.path.join(app.config['UPLOAD_FOLDER'],filename)).st_size
                 cursor.execute("SELECT CAST( Diagnosticke_vysetrenie_ID AS CHAR (15)) from ukol WHERE ID=\'" + ID + "\' ")
                 ukol = cursor.fetchone()
                 cursor.execute("UPDATE ukol SET subor_grafickeho_tabletu=\'" + str(name) + "\' , datum_zmeny=curdate() ,"
                         " velkost_suboru=\'" + str((file_length/1048576))  + "\'   WHERE ID=\'" + ID + "\' ")
                 conn.commit()
-                #, velkost_suboru=\'" + file_length  + "\'
                 return redirect('/ukoly/' + ukol['CAST( Diagnosticke_vysetrenie_ID AS CHAR (15))'] + '')
 
 
         else:
             cursor.execute("SELECT subor_grafickeho_tabletu FROM ukol WHERE ID=\'" + ID + "\'")
             name = cursor.fetchone()
-            subor = ID + "_" + name['subor_grafickeho_tabletu']
+            subor = ID + "_" +str(name['subor_grafickeho_tabletu'])
              
             if os.path.isfile(os.path.join(app.config['UPLOAD_FOLDER'],str(subor))):
-                return send_from_directory(app.config['UPLOAD_FOLDER'],str(subor),as_attachment=True) 
-               #return send_file(os.path.join(app.config['UPLOAD_FOLDER'],str(subor)), as_attachment=True)
+                key = b'yOHPDHMuGmoX2yqPWIXQ8exHObui08CbM1R1AskJt1A='
+                fernet = Fernet(key)
+                with open(os.path.join(app.config['UPLOAD_FOLDER'],subor),'rb') as enc_file:
+                    enfile = enc_file.read()
+
+                mojfile = fernet.decrypt(enfile)
+
+                with open(os.path.join(app.config['UPLOAD_FOLDER'],subor), 'wb') as dec_file:
+                    dec_file.write(mojfile)
+
+                result = send_file(os.path.join(app.config['UPLOAD_FOLDER'],subor),as_attachment=True)
+               
+                #with open(os.path.join(app.config['UPLOAD_FOLDER'],subor), 'wb') as dec_file:
+                #    dec_file.write(enfile)
+                def vymaz():
+                    time.sleep(1)
+                    with open(os.path.join(app.config['UPLOAD_FOLDER'],subor), 'wb') as dec_file:
+                        dec_file.write(enfile)
+                    
+                vymaz_thread = Thread(target=vymaz)
+                vymaz_thread.start()
+
+                #result = send_from_directory(app.config['UPLOAD_FOLDER'],str(subor),as_attachment=True)
+                return result
+                #return send_from_directory(app.config['UPLOAD_FOLDER'],str(subor),as_attachment=True)
             else: 
                 return render_template('upload.html')
     else:
@@ -192,16 +236,22 @@ def allowed_file(filename):
 
 
 def check_hash(plain, hashed):
-    """ Check MD5 hashes """
+    
     encoded = hashlib.sha512(plain.encode()).hexdigest().lower()
-  
-  #  encodedd = hashlib.md5(hashed.encode()).hexdigest().lower()
-
     return encoded == hashed.lower()
 
+
+def check_token(token, secret , counter):
+    hotp = pyotp.HOTP(secret)
+
+    for i in range(1, 10): 
+        if hotp.verify(token , (counter + i)):
+            return counter + i 
+    return 0
+    
 
 
 if __name__ == '__main__':
     app.run(ssl_context=('cert.pem','key.pem'),host='0.0.0.0', port=9090 )
-   ##app.run()
-   # serve(app,host='0.0.0.0', port=5000 )
+   
+   
