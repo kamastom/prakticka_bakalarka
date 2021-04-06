@@ -252,6 +252,7 @@ def check_token(token, secret , counter):
 
 
 if __name__ == '__main__':
-    app.run(ssl_context=('cert.pem','key.pem'),host='0.0.0.0', port=9090 )
+   # app.run(ssl_context=('cert.pem','key.pem'),host='0.0.0.0', port=9090 )
+   app.run(host='0.0.0.0')
    
    
