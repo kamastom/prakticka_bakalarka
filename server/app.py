@@ -22,14 +22,14 @@ import pyotp
 
 # Application config
 app = Flask(__name__)   # Flask instance
-app.secret_key = b'_5#loL"Fas4z\n\x92]/'
+app.secret_key = b'_5#loL"Fas4z\n\x92]/' # use new key 
 app.config['MYSQL_USER'] = 'root'  #username for the database
 app.config['MYSQL_PASSWORD'] = 'mojaWIFI4' #password for the database
-app.config['MYSQL_DB'] = 'mydb'
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['UPLOAD_FOLDER'] = 'files'
-app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=60)
-ALLOWED_EXTENSIONS = {'txt','png','jpg','jpeg'}
+app.config['MYSQL_DB'] = 'mydb' #name of your db
+app.config['MYSQL_HOST'] = 'localhost' 
+app.config['UPLOAD_FOLDER'] = 'files'  #destination for uploaded files
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=60) #auto logout 
+ALLOWED_EXTENSIONS = {'txt','png','jpg','jpeg'} #replace with your own extensions
 
 
 mysql = MySQL(app)  # MySQL instance
@@ -222,12 +222,12 @@ def add_security_headers(resp):
     resp.headers['Content-Security-Policy']='default-src \'self\''
     return resp
 
-@app.before_request
-def before_request():
-        if request.url.startswith('http://'):
-            url = request.url.replace('http://', 'https://', 1)
-            code = 301
-            return redirect(url, code=code)
+#@app.before_request
+#def before_request():
+#        if request.url.startswith('http://'):
+#            url = request.url.replace('http://', 'https://', 1)
+#            code = 301
+#            return redirect(url, code=code)
 
 
 def allowed_file(filename):
