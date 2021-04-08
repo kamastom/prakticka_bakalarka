@@ -42,7 +42,7 @@ CREATE TABLE `Diagnosticke_vysetrenie` (
 
 LOCK TABLES `Diagnosticke_vysetrenie` WRITE;
 /*!40000 ALTER TABLE `Diagnosticke_vysetrenie` DISABLE KEYS */;
-INSERT INTO `Diagnosticke_vysetrenie` VALUES (1,'sken','1255-05-05','dominika','ukoly',1,1),(2,'sken','1255-05-05','dominika','ukoly',2,2),(3,'sken','1255-05-05','dominika','ukoly',3,2),(4,'ohnive','1855-05-05','dominika','ukoly',4,3),(5,'fukanie','1855-05-05','dominika','ukoly',4,3),(6,'odber krvy','1855-05-05','dominika','ukoly',4,3),(7,'kreslenie','1855-05-05','dominika','ukoly',7,4),(8,'posudok','1855-05-05','dominika','ukoly',7,4),(9,'ziadne','4444-04-14','dominika','ukoly',7,4);
+INSERT INTO `Diagnosticke_vysetrenie` VALUES (1,'sken','1255-05-05','Geneva Black','ukoly',1,1),(2,'sken','1255-05-05','Geneva Black','ukoly',2,2),(3,'sken','1255-05-05','Geneva Black','ukoly',3,2),(4,'odber mocu','1855-05-05','dominika','ukoly',4,3),(5,'fukanie','1855-05-05','dominika','ukoly',4,3),(6,'odber krvy','1855-05-05','dominika','ukoly',4,3),(7,'kreslenie','1855-05-05','dominika','ukoly',7,4),(8,'posudok','1855-05-05','Geneva Black','ukoly',7,4),(9,'ziadne','4444-04-14','dominika','ukoly',7,4);
 /*!40000 ALTER TABLE `Diagnosticke_vysetrenie` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -73,7 +73,7 @@ CREATE TABLE `diagnoza_table` (
 
 LOCK TABLES `diagnoza_table` WRITE;
 /*!40000 ALTER TABLE `diagnoza_table` DISABLE KEYS */;
-INSERT INTO `diagnoza_table` VALUES (1,'zavislot na pizzu','novy','2005-09-06','2020-11-22','Diagnosticke_vysetrenia',1),(2,'zavislot na pizzu','novy','2005-09-06','2020-11-22','Diagnosticke_vysetrenia',2),(3,'zavislot na kebab','novy','2005-09-06','2020-11-22','Diagnosticke_vysetrenia',2),(4,'alkohol','novy','2005-09-06','2020-11-22','Diagnosticke_vysetrenia',3),(5,'vsetko','novy','2005-09-06','2020-11-22','Diagnosticke_vysetrenia',3),(6,'ziadna','nikdy','2005-09-06','2020-11-22','Diagnosticke_vysetrenia',4),(7,'farbenie','nikdy','2005-09-06','2020-11-22','Diagnosticke_vysetrenia',4);
+INSERT INTO `diagnoza_table` VALUES (1,'divy kasel','novy','2021-04-01','2020-11-22','Diagnosticke_vysetrenia',1),(2,'nakardioza','novy','2021-04-01','2020-11-22','Diagnosticke_vysetrenia',2),(3,'ruza - erysipelas','novy','2021-04-01','2020-11-22','Diagnosticke_vysetrenia',2),(4,'alkohol','novy','2005-09-06','2020-11-22','Diagnosticke_vysetrenia',3),(5,'vsetko','novy','2005-09-06','2020-11-22','Diagnosticke_vysetrenia',3),(6,'ziadna','nikdy','2005-09-06','2020-11-22','Diagnosticke_vysetrenia',4),(7,'farbenie','nikdy','2005-09-06','2020-11-22','Diagnosticke_vysetrenia',4);
 /*!40000 ALTER TABLE `diagnoza_table` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -101,7 +101,7 @@ CREATE TABLE `pacient` (
 
 LOCK TABLES `pacient` WRITE;
 /*!40000 ALTER TABLE `pacient` DISABLE KEYS */;
-INSERT INTO `pacient` VALUES (1,'barca','prijmeni','neviem','2155-09-06','diagnozy'),(2,'pacient2','prijmen3','neviem','0666-09-06','diagnozy'),(3,'tatiana','nie','zena','0666-06-06','diagnozy'),(4,'dominika','vesela','zena','1996-04-14','diagnozy');
+INSERT INTO `pacient` VALUES (1,'Sophia','Townsend','žena','2155-09-06','diagnozy'),(2,'Caesar','Lynch','muž','0666-09-06','diagnozy'),(3,'Nancy','Webb','iné','0666-06-06','diagnozy'),(4,'dominika','vesela','zena','1996-04-14','diagnozy');
 /*!40000 ALTER TABLE `pacient` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -134,7 +134,7 @@ CREATE TABLE `ukol` (
 
 LOCK TABLES `ukol` WRITE;
 /*!40000 ALTER TABLE `ukol` DISABLE KEYS */;
-INSERT INTO `ukol` VALUES (1,'default1','4k_space_244_-_3840x2160.png','1645-08-07','2021-03-02',13,1,1,1),(2,'default2','Supernova-backgrounds.jpg','1645-08-07','2021-03-05',3,1,1,1),(3,'default3','1869588.jpg','1645-08-07','2021-03-05',0,1,1,1),(4,'default4','pokus.txt','0145-08-07','2021-03-05',0,2,2,2),(5,'default4',NULL,'1455-08-07','2020-11-22',NULL,2,2,2),(6,'default5',NULL,'1455-08-07','2020-11-22',NULL,3,3,2),(7,'default6',NULL,'1455-08-07','2020-11-22',NULL,4,4,3),(8,'default6',NULL,'1455-08-07','2020-11-22',NULL,5,4,3),(9,'default7',NULL,'1455-08-07','2020-11-22',NULL,5,4,3),(10,'default8',NULL,'1455-08-07','2020-11-22',NULL,6,4,3),(11,'default9',NULL,'1455-08-07','2020-11-22',NULL,9,7,4);
+INSERT INTO `ukol` VALUES (1,'default1','pokus.txt','1645-08-07','2021-04-08',0,1,1,1),(2,'default2','1_4k_space_244_-_3840x21601.png','1645-08-07','2021-04-07',13,1,1,1),(3,'default3','1_4k_space_244_-_3840x21601.png','1645-08-07','2021-04-08',13,1,1,1),(4,'default4','pokus.txt','0145-08-07','2021-03-05',0,2,2,2),(5,'default4',NULL,'1455-08-07','2020-11-22',NULL,2,2,2),(6,'default5',NULL,'1455-08-07','2020-11-22',NULL,3,3,2),(7,'default6',NULL,'1455-08-07','2020-11-22',NULL,4,4,3),(8,'default6',NULL,'1455-08-07','2020-11-22',NULL,5,4,3),(9,'default7',NULL,'1455-08-07','2020-11-22',NULL,5,4,3),(10,'default8',NULL,'1455-08-07','2020-11-22',NULL,6,4,3),(11,'default9',NULL,'1455-08-07','2020-11-22',NULL,9,7,4);
 /*!40000 ALTER TABLE `ukol` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -163,7 +163,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES ('kamas','cb4bbdfc9b682c298cdfc02cf3b67c6175acc7715b67cdfa7a489975061574d23b3eb1d44ee8e973740d10962890b0c4ff22c3e40fca4dada644ac26bc90b755','kamas','tom',113,'BASE23SECRET2323'),('shewi','8a827e58f89b473fd09b9c09e6d3e60e66a8343fc4e7c84b92807792f04f1ec375768a8616a44a89af7c34291a8a72300cb010e070432c0322f0f7f976118ed0','dominika','peroxide',105,'BASE32SECRET3232');
+INSERT INTO `user` VALUES ('kamas','cb4bbdfc9b682c298cdfc02cf3b67c6175acc7715b67cdfa7a489975061574d23b3eb1d44ee8e973740d10962890b0c4ff22c3e40fca4dada644ac26bc90b755','kamas','tom',126,'BASE23SECRET2323'),('shewi','8a827e58f89b473fd09b9c09e6d3e60e66a8343fc4e7c84b92807792f04f1ec375768a8616a44a89af7c34291a8a72300cb010e070432c0322f0f7f976118ed0','dominika','peroxide',109,'BASE32SECRET3232');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -176,4 +176,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-04-06 21:58:24
+-- Dump completed on 2021-04-08 19:11:40
