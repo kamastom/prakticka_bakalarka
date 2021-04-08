@@ -2,14 +2,33 @@
 import hashlib
 import sys
 import mysql.connector
+import os
+import pyotp
+import time
+import getpass
 
+counter = int(0)
+secret = pyotp.random_base32()
+hotp = pyotp.HOTP(secret)
+jmeno = input('zadaj jmeno: ')
+prijmeni = input('zadaj prijmeni: ')
 
+ii = 1
+while ii == 1:
+    p = getpass.getpass(prompt='zadaj nove heslo')
+    if len(p) < 6:
+        print('heslo je kratke, skus znova')
+        continue
+    p2 = getpass.getpass(prompt='zopakuj zadane heslo')
+    if p == p2 :
+        print ('heslo ok')
+        ii = 0
+    else:
+        print ('hesla sa nezhoduju!!, skus znova')
+print('heslo prijate')
 
-jmeno = sys.argv[1]
-prijmeni = sys.argv[2]
-plain = sys.argv[3]
-encoded = hashlib.md5(plain.encode()).hexdigest().lower()
-
+plain = p
+encoded = hashlib.sha512(plain.encode()).hexdigest().lower()
 
 mydb = mysql.connector.connect(
         host="localhost",
@@ -18,11 +37,7 @@ mydb = mysql.connector.connect(
         database="mydb"
 )
 
-
-
 cursor = mydb.cursor()
-
-
 
 i = -1
 x = -1
@@ -56,17 +71,17 @@ while jetam:
         username = username + str(cislo)
 
     iterator = iterator + 1 
-    #print (username)
+    print (username)
     cursor.execute("SELECT username FROM user WHERE username ='" + username + "'")
     jetam = cursor.fetchone()
 
-
-
-sql = "INSERT INTO user (username, password, jmeno, prijmeni) VALUES (%s, %s, %s, %s)"
-val = (username,encoded,jmeno,prijmeni)
+sql = "INSERT INTO user (username, password, jmeno, prijmeni, counter, HOTP) VALUES (%s, %s, %s, %s, %s, %s)"
+val = (username,encoded,jmeno,prijmeni,counter,secret)
 cursor.execute(sql, val)
 mydb.commit()
 
+print('qr code pre nastavenie FreeOTP')
+os.system('qrencode -t utf8 <<< otpauth://hotp/'+ username +'?secret='+ secret)
                 
 print ("hash = " , encoded )
 
