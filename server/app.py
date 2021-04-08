@@ -87,7 +87,8 @@ def login():
             # Start new session
             session.clear()
             session['user_id'] = user['username']
-            cursor.execute("UPDATE user SET counter= %s WHERE username= %s;", (str(hotp),r_login))
+            cursor.execute("UPDATE user SET counter= %s WHERE username= %s;",
+                    (str(hotp),r_login))
             conn.commit()
             #session.permanent = True
             return redirect(url_for('index'))           
