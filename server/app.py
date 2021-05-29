@@ -23,8 +23,8 @@ import pyotp
 # Application config
 app = Flask(__name__)   # Flask instance
 app.secret_key = b'_5#loL"Fas4z\n\x92]/'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'mojaWIFI4'
+app.config['MYSQL_USER'] = 'root'  #username for the database
+app.config['MYSQL_PASSWORD'] = 'mojaWIFI4' #password for the database
 app.config['MYSQL_DB'] = 'mydb'
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['UPLOAD_FOLDER'] = 'files'
@@ -73,7 +73,7 @@ def login():
             return render_template('login.html', invalid=True)
 
         # Fetch entry from database
-        cursor.execute("SELECT  * FROM user WHERE username ='" + r_login + "'")
+        cursor.execute("SELECT  * FROM user WHERE username = %s;",(r_login,))
         user = cursor.fetchone()
 
         # If user is not in the database
