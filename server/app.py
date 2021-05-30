@@ -82,12 +82,12 @@ def login():
 
         # Check password hash
         match = check_hash(r_password, user['password'])
-        match2 = check_token(r_token, user['HOTP'], user['counter'])
+        hotp = check_token(r_token, user['HOTP'], user['counter'])
         if match is True and match2 != 0:
             # Start new session
             session.clear()
             session['user_id'] = user['username']
-            cursor.execute("UPDATE user SET counter='" + str(match2) +"'WHERE username='"+ r_login +"'")
+            cursor.execute("UPDATE user SET counter= %s WHERE username= %s;",(hotp,r_login))
             conn.commit()
             #session.permanent = True
             return redirect(url_for('index'))           
